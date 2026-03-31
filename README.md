@@ -1,30 +1,36 @@
-Web-based personalized diet planner
-# 🥗 Diet Planner BYOP
+# Free AI Diet Planner🍲
 
-## Project Overview
-A web-based Diet Planner that calculates BMI, water intake, daily steps, and exercise guidance. It generates weekly diet plans for Veg and Non-Veg users and highlights risky meals for obese users.
+## Overview
+Free AI Diet Planner is a **browser-based application** that helps users:  
+- Calculate **BMI** and view weight category  
+- Track **daily water intake**  
+- Get **exercise recommendations** based on goals  
+- Generate a **weekly meal plan** (vegetarian or non-vegetarian)  
+- Interact with a **built-in AI chat assistant** (offline, no API required)
 
-## Problem Statement
-Many people struggle to maintain a healthy diet and track their health. This project provides an interactive, personalized solution.
+---
 
-## Key Features
-- BMI calculation with color-coded risk  
-- Water intake visualization 💧  
-- Weekly breakfast, lunch, and dinner plans  
-- Steps and exercise suggestions based on goals  
-- Highlights risky meals for high BMI users
+## Features
+- **BMI Calculator** with color-coded categories  
+- **Weekly Meal Plan** with breakfast, lunch, and dinner for 7 days  
+- **AI Chat Assistant** for diet guidance and tips  
+- Fully **offline and free to use**  
 
-## How to Use
-1. Open `index.html` in a browser  
-2. Enter name, weight, height  
-3. Select goal and diet type  
-4. Click **Generate My Plan**  
+---
 
-## Technologies Used
-HTML, CSS, JavaScript
+## Usage
+1. Open `index.html` in a modern browser (Chrome, Safari, Firefox)  
+2. Enter your details: Name, Age, Weight, Height, Goal, and Diet Type  
+3. Click **Generate My Plan** to view BMI, water intake, exercise suggestions, and weekly meals  
+4. Ask questions in the AI chat to get instant guidance  
 
-## Learning Outcomes
-- DOM manipulation with JS  
-- Dynamic tables and visual feedback  
-- Applying real-world logic for health tracking
+---
 
+## Technologies
+- HTML5, CSS3, JavaScript  
+- Fully browser-based, no backend or API required  
+
+---
+
+## License
+This project is free to use, modify, and share.
