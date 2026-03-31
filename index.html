@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🥗 Free AI Diet Planner</title>
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #fff3e0);
+    text-align: center;
+    padding: 10px;
+}
+.container {
+    background: white;
+    width: 95%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-top: 20px;
+}
+h1 { color: #333; }
+input, select { width: 90%; padding: 10px; margin: 6px 0; border-radius: 10px; border: 1px solid #ccc; }
+button {
+    background: linear-gradient(to right, #43cea2, #185a9d);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    width: 95%;
+    margin-top: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+table { width: 100%; margin-top: 15px; border-collapse: collapse; text-align: center; }
+td, th { border: 1px solid #ddd; padding: 8px; }
+th { background: #f3f4f6; }
+tr:nth-child(even) { background: #f9f9f9; }
+.bmi-good { color: green; font-weight: bold; }
+.bmi-warning { color: orange; font-weight: bold; }
+.bmi-risk { color: red; font-weight: bold; }
+#result { margin-top: 15px; white-space: pre-line; text-align: left; }
+#chatBox { margin-top:20px; text-align:left; height:300px; overflow-y:auto; border:1px solid #ccc; padding:10px; border-radius:10px; background:#f9f9f9;}
+.chat-msg { margin:5px 0; padding:5px 10px; border-radius:10px; }
+.user { background:#d1e7ff; text-align:right; }
+.bot { background:#ffe2e2; text-align:left; font-style:italic; }
+#chatInput { width:85%; padding:10px; margin-top:10px; border-radius:10px; border:1px solid #ccc; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>🥗 Free AI Diet Planner</h1>
+
+<input type="text" id="name" placeholder="Your Name">
+<input type="number" id="age" placeholder="Age">
+<input type="number" id="weight" placeholder="Weight (kg)">
+<input type="number" id="height" placeholder="Height (cm)">
+
+<select id="goal">
+<option value="lose">🔥 Lose Weight</option>
+<option value="gain">💪 Gain Weight</option>
+<option value="maintain">⚖️ Maintain</option>
+</select>
+
+<select id="type">
+<option value="veg">🥗 Veg</option>
+<option value="nonveg">🍗 Non-Veg</option>
+</select>
+
+<button onclick="generatePlan()">✨ Generate My Plan</button>
+
+<div id="result"></div>
+<div id="weekly"></div>
+
+<h2>💬 Ask your Free AI Diet Assistant</h2>
+<div id="chatBox"></div>
+<input type="text" id="chatInput" placeholder="Ask anything about your diet">
+<button onclick="askBot()">Ask AI</button>
+</div>
+
+<script>
+let age, weight, height, goal, type, bmi, exercise;
+
+// ---------- Diet Planner ----------
+function generatePlan() {
+    let name = document.getElementById("name").value;
+    age = parseInt(document.getElementById("age").value);
+    weight = parseFloat(document.getElementById("weight").value);
+    height = parseFloat(document.getElementById("height").value);
+    goal = document.getElementById("goal").value;
+    type = document.getElementById("type").value;
+
+    if (!weight || !height || !age) {
+        document.getElementById("result").innerText = "⚠️ Please fill all details!";
+        return;
+    }
+
+    // BMI
+    bmi = (weight / ((height/100)*(height/100))).toFixed(1);
+    let colorClass;
+    if(bmi < 18.5) { colorClass = "bmi-warning"; }
+    else if(bmi < 24.9) { colorClass = "bmi-good"; }
+    else if(bmi < 29.9) { colorClass = "bmi-warning"; }
+    else { colorClass = "bmi-risk"; }
+
+    // Water
+    let water = (weight * 0.033).toFixed(2);
+    let glasses = Math.round(water / 0.25);
+    let waterEmoji = "💧".repeat(glasses);
+
+    // Exercise
+    if(goal==="lose") exercise="30-45 min cardio 🏃";
+    else if(goal==="gain") exercise="Strength training 45 min 💪";
+    else exercise="Light workout 30 min 🚶";
+
+    // Dynamic meals
+    const vegMeals = ["Oats 🥣","Poha","Upma","Paratha","Idli 🟡","Paneer Sabzi","Mixed Veg","Veg Curry","Vegetable Soup 🥦","Salad 🥗"];
+    const nonVegMeals = ["Egg 🥚","Omelette 🍳","Chicken 🍗","Fish 🐟","Scrambled Eggs 🥚","Chicken Curry 🍗","Fish Curry 🐟","Chicken Soup 🥗","Salad 🥗","Boiled Eggs 🥚"];
+    const randomMeal = arr => arr[Math.floor(Math.random()*arr.length)];
+
+    // Weekly table
+    let table = "<table><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>";
+    const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    for(let d of days){
+        table += `<tr>
+        <td>${d}</td>
+        <td>${type==="veg"?randomMeal(vegMeals):randomMeal(nonVegMeals)}</td>
+        <td>${type==="veg"?randomMeal(vegMeals):randomMeal(nonVegMeals)}</td>
+        <td>${type==="veg"?randomMeal(vegMeals):randomMeal(nonVegMeals)}</td>
+        </tr>`;
+    }
+    table += "</table>";
+
+    document.getElementById("result").innerHTML=
+        `Hey ${name} 👋\n📊 BMI: <span class="${colorClass}">${bmi}</span>\n💧 Water: ${water} L ${waterEmoji}\n🏋️ Exercise: ${exercise}`;
+    document.getElementById("weekly").innerHTML=table;
+}
+
+// ---------- Free AI Chat ----------
+function askBot() {
+    const input = document.getElementById("chatInput").value.trim();
+    if(!input) return;
+    const chatDiv = document.getElementById("chatBox");
+    chatDiv.innerHTML += `<div class="chat-msg user">${input}</div>`;
+
+    // Simple “AI” logic
+    let answer = freeAI(input);
+    chatDiv.innerHTML += `<div class="chat-msg bot">${answer}</div>`;
+    chatDiv.scrollTop = chatDiv.scrollHeight;
+    document.getElementById("chatInput").value="";
+}
+
+// Basic free AI responses
+function freeAI(msg) {
+    msg = msg.toLowerCase();
+    if(msg.includes("water")) return "💧 Drink more water every 2 hours!";
+    if(msg.includes("weight")) return "⚖️ Track your weight weekly, not daily!";
+    if(msg.includes("breakfast")) return "🥣 Breakfast is important! Try oats or eggs!";
+    if(msg.includes("exercise")) return "🏃‍♂️ Move your body daily: cardio, walk, or yoga!";
+    if(msg.includes("salad") || msg.includes("veg")) return "🥗 Add colorful veggies for vitamins!";
+    if(msg.includes("chicken") || msg.includes("non-veg")) return "🍗 Include lean proteins in moderation!";
+    // Random fun replies for any other question
+    const funReplies = [
+        "😎 Eat well, stay healthy, and smile!",
+        "🥳 Consistency is key! Keep going!",
+        "💪 Your body loves you! Treat it well!",
+        "🌟 Small steps every day make big changes!"
+    ];
+    return funReplies[Math.floor(Math.random()*funReplies.length)];
+}
+</script>
+
+</body>
+</html>
